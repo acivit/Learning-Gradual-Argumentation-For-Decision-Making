@@ -1,0 +1,27 @@
+arg(enter,0.5)
+
+arg(inside_comfort,0.5)
+arg(percentage_stretchment,0.5)
+arg(people_impairment,0.5)
+
+arg(robot_urgency,0.5)
+arg(next_time_over_timeout,0.5)
+arg(percentage_timeout,0.5)
+
+arg(breaking_queue,0.5)
+arg(important_role_in_queue,0.5)
+arg(amount_users_queue,0.5)
+arg(waiting_users_did_not_enter,0.5)
+
+att(inside_comfort, enter)
+sup(percentage_stretchment,inside_comfort)
+sup(people_impairment,inside_comfort)
+
+sup(robot_urgency,enter)
+sup(next_time_over_timeout,robot_urgency)
+sup(percentage_timeout,robot_urgency)
+
+att(breaking_queue,enter)
+sup(important_role_in_queue,breaking_queue)
+sup(amount_users_queue,breaking_queue)
+att(waiting_users_did_not_enter,breaking_queue)

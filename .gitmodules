@@ -1,3 +1,3 @@
 [submodule "Uncertainpy"]
 	path = Uncertainpy
-	url = https://github.com/nicopotyka/Uncertainpy.git
+	url = git@github.com:nicopotyka/Uncertainpy.git

@@ -11,9 +11,31 @@ python3 train.py
 
 # Setup
 
+## Submodule (Uncertainpy)
+
+To clone it with the required submodules (Uncertainpy package) run:
+
+```
+git clone --recurse-submodules <https://github.com/<this project name>>
+```
+
+If you already cloned withouth cloning the submodule try:
+
+```
+git submodule update --init
+```
+
+
+If any issue when downloading the submodules. Run:
+
+```
+git submodule add git@github.com:nicopotyka/Uncertainpy.git
+```
+
 ## Virtual environment
 
 This code was tested on a virtual environment (venv) on python 3.11 (due to Uncertainpy requirements)
+
 
 ## Library adaptation
 
@@ -25,7 +47,7 @@ Important: the uncertainpy code (in local) was modified for this experimentation
 
 
 
-./Uncertainpy/src/gradual/semantics/modular/MLPBasedInfluence.py
+./Uncertainpy/src/uncertainpy/gradual/semantics/modular/MLPBasedInfluence.py
 
 '''
 class MLPBasedInfluence:

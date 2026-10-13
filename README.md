@@ -1,5 +1,21 @@
 Code for the paper: Learning Gradual Argumentation for Decision Making
 
+# Execution
+
+To execute the experimentation run:
+
+```
+python3 train.py
+```
+
+
+# Setup
+
+## Virtual environment
+
+This code was tested on a virtual environment (venv) on python 3.11 (due to Uncertainpy requirements)
+
+## Library adaptation
 
 Important: the uncertainpy code (in local) was modified for this experimentation:
 

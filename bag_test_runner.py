@@ -4,12 +4,6 @@ bag_test_runner.py
 Simulation/testing runner for a trained `grad.BAG` model, adapted from the
 old project's af_experimentation_runner.py.
 
-Key difference vs. the original: this new project has no robot profiles and
-no src.argumentation_framework / activate_arguments / settings.py / .dl-file
-based AF pipeline. Instead, decisions come straight from the bag you trained
-in claude_train.py (grad.BAG + Backprop), via a `decide_fn(robot_information)
--> "enter"/"no enter"` callback built by claude_train.make_bag_decide_fn().
-
 Per-iteration simulation mechanics (doors open -> decide -> if "no enter",
 advance the queue -> if elevator not full, decide again -> otherwise wait for
 the next elevator) are copied unchanged from af_experimentation_runner.py's

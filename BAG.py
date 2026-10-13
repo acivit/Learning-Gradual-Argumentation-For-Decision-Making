@@ -1,3 +1,8 @@
+"""
+Custom version of BAG file from the Uncertainpy package
+"""
+
+
 import os
 import re
 import string

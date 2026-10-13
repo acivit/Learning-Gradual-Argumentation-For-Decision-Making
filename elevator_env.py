@@ -4,19 +4,9 @@ elevator_env.py
 Standalone RL environment for the "should the robot enter the elevator?"
 decision problem described in generate_environment.py / experimentation.py.
 
-This does NOT depend on the argumentation-framework code (ArgumentationFramework,
-activate_arguments, ElevatorSimulation, the .dl case file) since those files
-were not provided. Instead, the same `importances` dictionaries used in
-experimentation.py's `importances_test` are used directly as the weights of a
+The `importances` dictionaries are used directly as the weights of a
 hand-written reward function, so you can train agents right now with e.g.
 importances_test["complacent"], importances_test["time-efficient"], etc.
-
-If/when you plug the real argumentation-framework back in, you only need to
-replace `ElevatorEnv._resolve_reward()` with a call to
-`get_arguments_and_decision(robot_information, importances)` and translate its
-decision ("enter" / "no enter" / "tie") plus your own notion of "how good was
-that decision" into the reward. Everything else (state generation, episode
-loop, action space) can stay the same.
 
 Action space
 ------------

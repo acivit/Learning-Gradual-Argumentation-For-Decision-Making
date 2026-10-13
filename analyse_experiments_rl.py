@@ -1,29 +1,8 @@
 """
 analyse_experiments.py
 ------------------------
-Adaptation of analyse_experimentation.py to the new combined_decision_log.csv
-format produced by run_full_pipeline.py / af_experimentation_runner.py.
 
-What changed vs. the original
--------------------------------
-- The original script hardcoded three models (DF, QE, EB) read from three
-  separate columns (decision_DF, decision_QE, decision_EB) that all shared
-  ONE row per (run, iteration) - because all three semantics were evaluated
-  on the exact same shared trajectory.
-- The new log instead has a single `decision` column plus a `model` column,
-  and - importantly - since each model now runs its OWN independent
-  trajectory (see run_full_pipeline.py), each model has its own rows and its
-  own iteration count for a given run. So instead of walking one shared
-  per-run dataframe while tracking a "finished" flag per model, this script
-  simply looks, for each (profile, model, run), for the first row where
-  decision == "enter" - if there is one, that run was a "success" for that
-  model and its fields feed the metrics below; if there is none, that
-  model timed out on that run.
-
-Metrics computed (identical definitions to the original script), now for
-every model found in the log (by default: argumentation_DF, argumentation_QE,
-argumentation_EB, tabular_q, dqn, contextual_bandit, neural_contextual_bandit,
-vector_q_morl, multihead_dqn_morl):
+Metrics computed:
 
     success_pct                - % of runs where the model ever decided "enter"
     skipped_queue_pct          - of the successful runs, % where there was a
@@ -62,6 +41,8 @@ Three figures are saved to --plots-dir (default: alongside --out):
       (y). Answers "of the models that do get the robot in, which ones are
       both reliable AND fast?" (bottom-right is the sweet spot).
 
+  Radar plots
+      Include the radar plot for the metrics. 
 Usage
 -----
     python analyse_experiments.py

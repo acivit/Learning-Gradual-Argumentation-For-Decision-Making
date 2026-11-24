@@ -6,11 +6,19 @@ Code for the paper: Learning Gradual Argumentation for Decision Making
 
 Here are the edge sensitivity plots:
 
-First plot: Sensitivity of the Task Urgency --> Enter edge weight. Fixing the Passenger Comfort --> Enter and Queue Compliance --> Enter edge weights to 1. The plot shows the evolution of the metrics for all robot profiles, and for all the tested framework structures. 
+**First plot: Sensitivity of the Task Urgency → Enter edge weight.**
 
-Observe that the Fully-connected hidden layers (5 Hidden FC, and 10 Hidden FC) achieve one behaviour when the edge weight is different from 0, and it barely changes. The Original framework (in blue) is the most flexible of all, with the semi-dense models (5 Hidden SD and 10 Hidden SD) achieving a flexible behaviour too. 
+The Passenger Comfort → Enter and Queue Compliance → Enter edge weights are fixed at 1. The plot shows the evolution of the metrics across all robot profiles and for all the tested framework structures.
 
-As expected, increasing the Task Urgency --> Enter edge weight gives more importance to the robot urgency (the timeout), therefore, as it increases, the number of successes also increases, the number of elevators waited decreases, and the social norms are less considered, resulting into more queue skips, more priority violations, and more people with a disability inside the elevator being packed. 
+We can observe that the fully connected hidden-layer models (5 Hidden FC and 10 Hidden FC) exhibit similar behaviour for all non-zero edge weights, with very little variation. The Original framework (in blue) is the most flexible of all, while the semi-dense models (5 Hidden SD and 10 Hidden SD) also demonstrate a relatively flexible behaviour.
+
+As expected, increasing the Task Urgency → Enter edge weight gives greater importance to robot urgency (i.e., the timeout). Consequently, as the edge weight increases, the number of successful tasks also increases, while the number of elevators waited for decreases. However, social norms become less important, resulting in more queue skips, more priority violations, and more instances of people with disabilities being packed inside the elevator.
+
+Additionally, the Time-efficient and Comfort-blind models achieve higher success rates at lower edge weights, as their baselines are designed to prioritise time over other social norms.
+
+It is worth noting that reducing the edge weight for the Comfort-blind model to 0.5 can significantly reduce the number of cases in which a person with a disability is packed inside the elevator.
+
+These results represent the sensitivity analysis only when the other edge weights are fixed at 1. Therefore, they should not be considered fully representative of the overall framework behaviour.
 
 ![Plot 5](results/edge_sensitivity_plots_custom/group_all_robot_urgency_grid.png)
 

@@ -1,5 +1,6 @@
 import ast
 import copy
+import itertools
 import os
 import random
 
@@ -11,6 +12,8 @@ from scipy.stats import gaussian_kde
 
 from Backprop import Backprop
 from settings import frozen_nodes, interpretable_arguments, EDGE_DISCOUNT_TARGET, EDGE_DISCOUNT_VARIANTS, NORMALISED_MODEL_NAME, ABLATION_VARIANTS, BASELINE_MODEL_NAME
+from settings import (EDGE_SWEEP_ENABLED, EDGE_SWEEP_MODE, EDGE_SWEEP_BASE, EDGE_SWEEP_VALUES,
+                      EDGE_SWEEP_INCLUDE_RL_MAB)
 from utils.compute_attributions import compute_argument_gradient
 from utils.set_base_scores_from_context import set_base_scores_from_context, set_base_scores_original
 
@@ -479,7 +482,7 @@ def find_edges_into(bag, target_name, source_names):
     return matches
 
 
-def copy_and_discount_edges(bag, source_factors, target_name=EDGE_DISCOUNT_TARGET):
+def copy_and_discount_edges(bag, source_factors, target_name=EDGE_DISCOUNT_TARGET, verbose=True):
     """Builds an edge-discounted COPY of an already-trained bag: deep-copies
     it and multiplies the weight of each edge source -> target_name by that
     source's own factor from source_factors (a {source_name: factor} dict,
@@ -499,8 +502,9 @@ def copy_and_discount_edges(bag, source_factors, target_name=EDGE_DISCOUNT_TARGE
         factor = source_factors[src_name]
         found_sources.add(src_name)
         touched_attrs = _discount_edge(edge, factor)
-        print(f"  discounted edge {src_name} -> {target_name} by x{factor} "
-              f"(attributes updated: {touched_attrs})")
+        if verbose:
+            print(f"  discounted edge {src_name} -> {target_name} by x{factor} "
+                  f"(attributes updated: {touched_attrs})")
 
     missing = set(source_factors.keys()) - found_sources
     if missing:
@@ -511,6 +515,158 @@ def copy_and_discount_edges(bag, source_factors, target_name=EDGE_DISCOUNT_TARGE
             "intermediate node instead, in which case this function isn't the right tool)."
         )
     return bag_copy, backprop_copy
+
+# ---------------------------------------------------------------------- #
+# Exhaustive edge-weight sweep
+# ---------------------------------------------------------------------- #
+def _sweep_model_name(factors):
+    return (f"Sweep: comfort={factors['inside_comfort']:g}, "
+            f"queue={factors['breaking_queue']:g}, urgency={factors['robot_urgency']:g}")
+
+
+def build_edge_sensitivity_variants():
+    """Builds the list of {"model_name", "source_factors"} dicts described by
+    EDGE_SWEEP_BASE / EDGE_SWEEP_VALUES / EDGE_SWEEP_MODE in settings.py.
+    The base combination (e.g. 1,1,1) is always included once."""
+    swept = list(EDGE_SWEEP_VALUES.keys())
+    combos = [dict(EDGE_SWEEP_BASE)]
+    if EDGE_SWEEP_MODE == "grid":
+        for values in itertools.product(*[EDGE_SWEEP_VALUES[k] for k in swept]):
+            combos.append({**EDGE_SWEEP_BASE, **dict(zip(swept, values))})
+    elif EDGE_SWEEP_MODE == "one_at_a_time":
+        for source in swept:
+            for value in EDGE_SWEEP_VALUES[source]:
+                combos.append({**EDGE_SWEEP_BASE, source: value})
+    else:
+        raise ValueError(f"Unknown EDGE_SWEEP_MODE: {EDGE_SWEEP_MODE!r}")
+
+    variants, seen = [], set()
+    for factors in combos:
+        key = tuple(sorted(factors.items()))
+        if key in seen:
+            continue
+        seen.add(key)
+        variants.append({"model_name": _sweep_model_name(factors), "source_factors": factors})
+    return variants
+
+
+def plot_edge_sensitivity_metrics(metrics_df, out_dir, title_suffix="", hue_col=None):
+    """One figure per swept edge: a grid of subplots (one per numeric metric
+    column of the summary) showing the metric against that edge's factor.
+    Only rows where every OTHER edge is at its EDGE_SWEEP_BASE value are used,
+    so each curve is a clean one-edge slice. If hue_col is given (e.g.
+    "dl_file"), one line is drawn per value of it. Saves
+    <out_dir>/edge_sensitivity_<source>.png and returns the paths."""
+    os.makedirs(out_dir, exist_ok=True)
+    factor_cols = {src: f"edge_factor_{src}" for src in EDGE_SWEEP_BASE}
+    if not all(c in metrics_df.columns for c in factor_cols.values()):
+        print("  Skipping edge sweep plots: edge_factor_* columns missing.")
+        return []
+
+    df = metrics_df.dropna(subset=list(factor_cols.values()))
+    metric_cols = [c for c in df.columns
+                   if pd.api.types.is_numeric_dtype(df[c]) and not c.startswith("edge_factor_")]
+    if df.empty or not metric_cols:
+        print("  Skipping edge sweep plots: no numeric metric columns found.")
+        return []
+
+    paths = []
+    for source in EDGE_SWEEP_VALUES:
+        others = [o for o in EDGE_SWEEP_BASE if o != source]
+        mask = np.ones(len(df), dtype=bool)
+        for o in others:
+            mask &= (df[factor_cols[o]] == EDGE_SWEEP_BASE[o]).to_numpy()
+        slice_df = df[mask]
+        if slice_df.empty:
+            continue
+
+        n_cols = min(4, len(metric_cols))
+        n_rows = int(np.ceil(len(metric_cols) / n_cols))
+        fig, axes = plt.subplots(n_rows, n_cols, figsize=(4.2 * n_cols, 3.2 * n_rows), squeeze=False)
+        groups = [(None, slice_df)] if hue_col is None else list(slice_df.groupby(hue_col))
+        for i, metric in enumerate(metric_cols):
+            ax = axes[i // n_cols][i % n_cols]
+            for label, g in groups:
+                curve = g.groupby(factor_cols[source])[metric].mean().sort_index()
+                ax.plot(curve.index, curve.values, marker="o", markersize=3,
+                        label=None if label is None else str(label))
+            ax.axvline(EDGE_SWEEP_BASE[source], color="grey", linestyle=":", linewidth=1)
+            ax.set_title(metric, fontsize=9)
+            ax.set_xlabel(f"{source} -> {EDGE_DISCOUNT_TARGET} factor")
+            if hue_col is not None and i == 0:
+                ax.legend(fontsize=7, title=hue_col, title_fontsize=8)
+        for j in range(len(metric_cols), n_rows * n_cols):
+            axes[j // n_cols][j % n_cols].axis("off")
+
+        others_txt = ", ".join(f"{o}={EDGE_SWEEP_BASE[o]:g}" for o in others)
+        fig.suptitle(f"Metrics vs {source} edge factor ({others_txt}) {title_suffix}".strip())
+        fig.tight_layout(rect=[0, 0, 1, 0.96])
+        path = os.path.join(out_dir, f"edge_sensitivity_{source}.png")
+        fig.savefig(path, dpi=150)
+        plt.close(fig)
+        paths.append(path)
+        print(f"Saved edge sweep plot -> {path}")
+    return paths
+
+
+def run_edge_sensitivity(bag, dataset_name, dl_name, results_dir, n_test_runs, rl_mab=None):
+    """Simulates every edge-weight sweep variant of the trained `bag`, runs
+    the usual analyse() on the result and writes
+    <results_dir>/edge_sensitivity/edge_sensitivity_metrics.csv (same metrics as
+    robot_metrics_summary.csv, plus dataset / dl_file / edge-factor columns)."""
+    sweep_dir = os.path.join(results_dir, "edge_sensitivity")
+    os.makedirs(sweep_dir, exist_ok=True)
+
+    variants = build_edge_sensitivity_variants()
+    print("=" * 70)
+    print(f"STEP 4 - edge-weight sweep: {len(variants)} variants x {n_test_runs} runs")
+    print("=" * 70)
+
+    decide_fns, factors_by_model = {}, {}
+    for variant in variants:
+        bag_copy, backprop_copy = copy_and_discount_edges(
+            bag, variant["source_factors"], target_name=EDGE_DISCOUNT_TARGET, verbose=False,
+        )
+        decide_fns[variant["model_name"]] = make_bag_decide_fn(bag_copy, backprop_copy, dataset_name)
+        factors_by_model[variant["model_name"]] = variant["source_factors"]
+
+    if EDGE_SWEEP_INCLUDE_RL_MAB and rl_mab is not None:
+        rl_models, rl_weights = rl_mab
+        decide_fns.update(make_rl_mab_decide_fns(rl_models, rl_weights))
+
+    outcomes_df, log_df = bag_test_runner.run_tests_all_models(
+        decide_fns, n_test_runs=n_test_runs, robot_profile=dataset_name,
+    )
+    log_path = os.path.join(sweep_dir, "combined_decision_log.csv")
+    outcomes_path = os.path.join(sweep_dir, "test_outcomes.csv")
+    summary_path = os.path.join(sweep_dir, "robot_metrics_summary.csv")
+    log_df.to_csv(log_path, index=False)
+    outcomes_df.to_csv(outcomes_path, index=False)
+    analyse(log_path, summary_path, plots_dir=os.path.join(sweep_dir, "plots"))
+
+    # Annotate the summary with the edge factors of each row's model.
+    summary = pd.read_csv(summary_path)
+    model_col = next((c for c in summary.columns if summary[c].astype(str).isin(factors_by_model.keys()).any()), None)
+    if model_col is None:
+        print("  WARNING: could not find the model-name column in the summary; "
+              "edge-factor columns not added.")
+    else:
+        for source in EDGE_SWEEP_BASE:
+            summary[f"edge_factor_{source}"] = summary[model_col].map(
+                lambda m, s=source: factors_by_model[m][s] if m in factors_by_model else np.nan
+            )
+    if "dataset" not in summary.columns:
+        summary.insert(0, "dataset", dataset_name)
+    if "dl_file" not in summary.columns:
+        summary.insert(1, "dl_file", dl_name)
+
+    metrics_path = os.path.join(sweep_dir, "edge_sensitivity_metrics.csv")
+    summary.to_csv(metrics_path, index=False)
+    print(f"Saved edge sweep metrics -> {metrics_path}")
+    plot_edge_sensitivity_metrics(summary, os.path.join(sweep_dir, "plots"),
+                            title_suffix=f"[{dataset_name} / {dl_name}]")
+    return metrics_path
+
 
 def _sigmoid(x):
     return 1.0 / (1.0 + np.exp(-x))
@@ -966,6 +1122,12 @@ def run_pipeline(dataset_name, dataset_path, dl_name, case_file, results_root="r
     plots_dir = os.path.join(results_dir, "plots")
     analyse(log_path, summary_path, plots_dir=plots_dir)
 
+    # ------------------------------------------------------------------ #
+    # Step 4: exhaustive edge-weight sweep on the trained bag.
+    # ------------------------------------------------------------------ #
+    if EDGE_SWEEP_ENABLED:
+        run_edge_sensitivity(bag, dataset_name, dl_name, results_dir, n_test_runs, rl_mab=rl_mab)
+
     return {
         "results_dir": results_dir,
         "summary_path": summary_path,
@@ -1054,6 +1216,26 @@ if __name__ == "__main__":
         print(f"  [{run['dataset']} / {run['dl_file']}] -> {run['results_dir']}")
 
     # A flat index of every run, handy for quickly locating any result.
+    # One edge-sweep metrics CSV per robot profile (all .dl files stacked),
+    # directly in the results folder.
+    if EDGE_SWEEP_ENABLED:
+        for dataset_cfg in DATASETS:
+            parts = []
+            for dl_cfg in DL_FILES:
+                part_path = os.path.join(RESULTS_ROOT, dataset_cfg["name"], dl_cfg["name"],
+                                         "edge_sensitivity", "edge_sensitivity_metrics.csv")
+                if os.path.exists(part_path):
+                    parts.append(pd.read_csv(part_path))
+            if parts:
+                out_path = os.path.join(RESULTS_ROOT, f"edge_sensitivity_metrics_{dataset_cfg['name']}.csv")
+                profile_df = pd.concat(parts, ignore_index=True)
+                profile_df.to_csv(out_path, index=False)
+                print(f"Saved edge sweep metrics for {dataset_cfg['name']} -> {out_path}")
+                plot_edge_sensitivity_metrics(
+                    profile_df, os.path.join(RESULTS_ROOT, "edge_sensitivity_plots", dataset_cfg["name"]),
+                    title_suffix=f"[{dataset_cfg['name']}]", hue_col="dl_file",
+                )
+
     index_path = os.path.join(RESULTS_ROOT, "run_index.csv")
     pd.DataFrame(run_summaries).to_csv(index_path, index=False)
     print(f"Saved run index -> {index_path}")

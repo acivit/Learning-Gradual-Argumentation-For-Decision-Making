@@ -1,5 +1,39 @@
 Code for the paper: Learning Gradual Argumentation for Decision Making
 
+# Results sensitivity
+
+## Edge Sensitivity Plots
+
+Here are the edge sensitivity plots:
+
+First plot: Sensitivity of the Task Urgency --> Enter edge weight. Fixing the Passenger Comfort --> Enter and Queue Compliance --> Enter edge weights to 1. The plot shows the evolution of the metrics for all robot profiles, and for all the tested framework structures. 
+
+Observe that the Fully-connected hidden layers (5 Hidden FC, and 10 Hidden FC) achieve one behaviour when the edge weight is different from 0, and it barely changes. The Original framework (in blue) is the most flexible of all, with the semi-dense models (5 Hidden SD and 10 Hidden SD) achieving a flexible behaviour too. 
+
+As expected, increasing the Task Urgency --> Enter edge weight gives more importance to the robot urgency (the timeout), therefore, as it increases, the number of successes also increases, the number of elevators waited decreases, and the social norms are less considered, resulting into more queue skips, more priority violations, and more people with a disability inside the elevator being packed. 
+
+![Plot 5](results/edge_sensitivity_plots_custom/group_all_robot_urgency_grid.png)
+
+Below, find the plots for the individual robot profiles.
+
+Comfort-blind:
+
+![Plot 1](results/edge_sensitivity_plots_custom/comfort-blind_robot_urgency_grid.png)
+
+Comfort-caring:
+
+![Plot 2](results/edge_sensitivity_plots_custom/comfort-caring_robot_urgency_grid.png)
+
+Socially compliant: 
+
+![Plot 3](results/edge_sensitivity_plots_custom/complacent_robot_urgency_grid.png)
+
+Time-efficient:
+
+![Plot 4](results/edge_sensitivity_plots_custom/time-efficient_robot_urgency_grid.png)
+
+
+
 # Execution
 
 To execute the experimentation run:

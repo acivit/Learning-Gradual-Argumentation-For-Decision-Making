@@ -1,5 +1,5 @@
 """
-Plots the edge-sweep CSVs written by train.py
+Plots the edge-sensitivity CSVs written by train.py
 (results/edge_sensitivity_metrics_<profile>.csv) and saves the figures.
 
 Run:  python plot_edge_sensitivity.py
@@ -36,7 +36,7 @@ SHOW_LEGEND = True
 SHOW_GRID = True
 SHOW_BASELINE_LINE = True                      # dotted vertical line at the base value
 MARKER = "o"                                   # marker for single-profile figures
-LINE_WIDTH = 0.9
+LINE_WIDTH = 1.3
 
 # ---- Several robot profiles in the same figure ----------------------- #
 # One figure per group and per edge; each group name -> list of profiles
@@ -250,7 +250,7 @@ def plot_profiles(profiles, profile_names, file_prefix, label):
     bottom = 0.10 if combined and SHOW_LEGEND else 0.0
 
     for source in EDGE_BASE:
-        # Only edges that were actually varied in the sweep.
+        # Only edges that were actually varied in the sensitivity analysis.
         if df_all[f"edge_factor_{source}"].nunique() < 2:
             continue
         data = {}

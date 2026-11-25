@@ -12,8 +12,8 @@ from scipy.stats import gaussian_kde
 
 from Backprop import Backprop
 from settings import frozen_nodes, interpretable_arguments, EDGE_DISCOUNT_TARGET, EDGE_DISCOUNT_VARIANTS, NORMALISED_MODEL_NAME, ABLATION_VARIANTS, BASELINE_MODEL_NAME
-from settings import (EDGE_SWEEP_ENABLED, EDGE_SWEEP_MODE, EDGE_SWEEP_BASE, EDGE_SWEEP_VALUES,
-                      EDGE_SWEEP_INCLUDE_RL_MAB)
+from settings import (EDGE_SENSITIVITY_ENABLED, EDGE_SENSITIVITY_MODE, EDGE_SENSITIVITY_BASE,
+                      EDGE_SENSITIVITY_VALUES, EDGE_SENSITIVITY_SEED, EDGE_SENSITIVITY_ANALYSE_PLOTS)
 from utils.compute_attributions import compute_argument_gradient
 from utils.set_base_scores_from_context import set_base_scores_from_context, set_base_scores_original
 
@@ -517,28 +517,28 @@ def copy_and_discount_edges(bag, source_factors, target_name=EDGE_DISCOUNT_TARGE
     return bag_copy, backprop_copy
 
 # ---------------------------------------------------------------------- #
-# Exhaustive edge-weight sweep
+# Edge-weight sensitivity analysis
 # ---------------------------------------------------------------------- #
-def _sweep_model_name(factors):
-    return (f"Sweep: comfort={factors['inside_comfort']:g}, "
+def _sensitivity_model_name(factors):
+    return (f"comfort={factors['inside_comfort']:g}, "
             f"queue={factors['breaking_queue']:g}, urgency={factors['robot_urgency']:g}")
 
 
 def build_edge_sensitivity_variants():
     """Builds the list of {"model_name", "source_factors"} dicts described by
-    EDGE_SWEEP_BASE / EDGE_SWEEP_VALUES / EDGE_SWEEP_MODE in settings.py.
+    EDGE_SENSITIVITY_BASE / EDGE_SENSITIVITY_VALUES / EDGE_SENSITIVITY_MODE in settings.py.
     The base combination (e.g. 1,1,1) is always included once."""
-    swept = list(EDGE_SWEEP_VALUES.keys())
-    combos = [dict(EDGE_SWEEP_BASE)]
-    if EDGE_SWEEP_MODE == "grid":
-        for values in itertools.product(*[EDGE_SWEEP_VALUES[k] for k in swept]):
-            combos.append({**EDGE_SWEEP_BASE, **dict(zip(swept, values))})
-    elif EDGE_SWEEP_MODE == "one_at_a_time":
+    swept = list(EDGE_SENSITIVITY_VALUES.keys())
+    combos = [dict(EDGE_SENSITIVITY_BASE)]
+    if EDGE_SENSITIVITY_MODE == "grid":
+        for values in itertools.product(*[EDGE_SENSITIVITY_VALUES[k] for k in swept]):
+            combos.append({**EDGE_SENSITIVITY_BASE, **dict(zip(swept, values))})
+    elif EDGE_SENSITIVITY_MODE == "one_at_a_time":
         for source in swept:
-            for value in EDGE_SWEEP_VALUES[source]:
-                combos.append({**EDGE_SWEEP_BASE, source: value})
+            for value in EDGE_SENSITIVITY_VALUES[source]:
+                combos.append({**EDGE_SENSITIVITY_BASE, source: value})
     else:
-        raise ValueError(f"Unknown EDGE_SWEEP_MODE: {EDGE_SWEEP_MODE!r}")
+        raise ValueError(f"Unknown EDGE_SENSITIVITY_MODE: {EDGE_SENSITIVITY_MODE!r}")
 
     variants, seen = [], set()
     for factors in combos:
@@ -546,36 +546,36 @@ def build_edge_sensitivity_variants():
         if key in seen:
             continue
         seen.add(key)
-        variants.append({"model_name": _sweep_model_name(factors), "source_factors": factors})
+        variants.append({"model_name": _sensitivity_model_name(factors), "source_factors": factors})
     return variants
 
 
 def plot_edge_sensitivity_metrics(metrics_df, out_dir, title_suffix="", hue_col=None):
     """One figure per swept edge: a grid of subplots (one per numeric metric
     column of the summary) showing the metric against that edge's factor.
-    Only rows where every OTHER edge is at its EDGE_SWEEP_BASE value are used,
+    Only rows where every OTHER edge is at its EDGE_SENSITIVITY_BASE value are used,
     so each curve is a clean one-edge slice. If hue_col is given (e.g.
     "dl_file"), one line is drawn per value of it. Saves
     <out_dir>/edge_sensitivity_<source>.png and returns the paths."""
     os.makedirs(out_dir, exist_ok=True)
-    factor_cols = {src: f"edge_factor_{src}" for src in EDGE_SWEEP_BASE}
+    factor_cols = {src: f"edge_factor_{src}" for src in EDGE_SENSITIVITY_BASE}
     if not all(c in metrics_df.columns for c in factor_cols.values()):
-        print("  Skipping edge sweep plots: edge_factor_* columns missing.")
+        print("  Skipping edge sensitivity plots: edge_factor_* columns missing.")
         return []
 
     df = metrics_df.dropna(subset=list(factor_cols.values()))
     metric_cols = [c for c in df.columns
                    if pd.api.types.is_numeric_dtype(df[c]) and not c.startswith("edge_factor_")]
     if df.empty or not metric_cols:
-        print("  Skipping edge sweep plots: no numeric metric columns found.")
+        print("  Skipping edge sensitivity plots: no numeric metric columns found.")
         return []
 
     paths = []
-    for source in EDGE_SWEEP_VALUES:
-        others = [o for o in EDGE_SWEEP_BASE if o != source]
+    for source in EDGE_SENSITIVITY_VALUES:
+        others = [o for o in EDGE_SENSITIVITY_BASE if o != source]
         mask = np.ones(len(df), dtype=bool)
         for o in others:
-            mask &= (df[factor_cols[o]] == EDGE_SWEEP_BASE[o]).to_numpy()
+            mask &= (df[factor_cols[o]] == EDGE_SENSITIVITY_BASE[o]).to_numpy()
         slice_df = df[mask]
         if slice_df.empty:
             continue
@@ -590,7 +590,7 @@ def plot_edge_sensitivity_metrics(metrics_df, out_dir, title_suffix="", hue_col=
                 curve = g.groupby(factor_cols[source])[metric].mean().sort_index()
                 ax.plot(curve.index, curve.values, marker="o", markersize=3,
                         label=None if label is None else str(label))
-            ax.axvline(EDGE_SWEEP_BASE[source], color="grey", linestyle=":", linewidth=1)
+            ax.axvline(EDGE_SENSITIVITY_BASE[source], color="grey", linestyle=":", linewidth=1)
             ax.set_title(metric, fontsize=9)
             ax.set_xlabel(f"{source} -> {EDGE_DISCOUNT_TARGET} factor")
             if hue_col is not None and i == 0:
@@ -598,73 +598,144 @@ def plot_edge_sensitivity_metrics(metrics_df, out_dir, title_suffix="", hue_col=
         for j in range(len(metric_cols), n_rows * n_cols):
             axes[j // n_cols][j % n_cols].axis("off")
 
-        others_txt = ", ".join(f"{o}={EDGE_SWEEP_BASE[o]:g}" for o in others)
+        others_txt = ", ".join(f"{o}={EDGE_SENSITIVITY_BASE[o]:g}" for o in others)
         fig.suptitle(f"Metrics vs {source} edge factor ({others_txt}) {title_suffix}".strip())
         fig.tight_layout(rect=[0, 0, 1, 0.96])
         path = os.path.join(out_dir, f"edge_sensitivity_{source}.png")
         fig.savefig(path, dpi=150)
         plt.close(fig)
         paths.append(path)
-        print(f"Saved edge sweep plot -> {path}")
+        print(f"Saved edge sensitivity plot -> {path}")
     return paths
 
 
-def run_edge_sensitivity(bag, dataset_name, dl_name, results_dir, n_test_runs, rl_mab=None):
-    """Simulates every edge-weight sweep variant of the trained `bag`, runs
-    the usual analyse() on the result and writes
-    <results_dir>/edge_sensitivity/edge_sensitivity_metrics.csv (same metrics as
-    robot_metrics_summary.csv, plus dataset / dl_file / edge-factor columns)."""
-    sweep_dir = os.path.join(results_dir, "edge_sensitivity")
-    os.makedirs(sweep_dir, exist_ok=True)
+def record_reference_trajectories(dataset_name, n_test_runs, seed=EDGE_SENSITIVITY_SEED):
+    """Runs the simulator ONCE for this profile with a reference policy that
+    never enters, and records the exact input (robot_information, deep-copied
+    at call time) of every decision point, grouped by run.
+
+    Why "never enter": the simulator only branches on enter / no enter, and a
+    run stops at the first "enter". So the trajectory of ANY model is simply
+    this never-enter trajectory cut at that model's first "enter" decision.
+    Replaying a model on these records therefore gives exactly what
+    simulate_model_run() would give it under the same random draws, and the
+    only thing that changes between two models / two edge weights is the
+    decision itself. Returns {run: [robot_information, ...]} in order."""
+    records = []
+
+    def recorder(robot_information):
+        records.append(copy.deepcopy(robot_information))
+        return "no enter"
+
+    saved_py_state, saved_np_state = random.getstate(), np.random.get_state()
+    if seed is not None:
+        random.seed(seed)
+        np.random.seed(seed)
+    try:
+        bag_test_runner.run_tests_all_models(
+            {"reference_never_enter": recorder}, n_test_runs=n_test_runs,
+            robot_profile=dataset_name, keep_iteration_log=False,
+        )
+    finally:
+        random.setstate(saved_py_state)
+        np.random.set_state(saved_np_state)
+
+    runs = {}
+    for record in records:
+        runs.setdefault(record["run"], []).append(record)
+    return runs
+
+
+def replay_decisions(decide_fn, runs, model_name, dataset_name):
+    """Evaluates decide_fn on the recorded decision points of every run, in
+    order, stopping at the first "enter" (the run ends there, exactly like in
+    the simulator). Returns (log_rows, outcome_rows) in the same format as
+    bag_test_runner.run_tests_all_models(): log rows have bag_test_runner.
+    DF_COLUMNS, so they can go straight into analyse()."""
+    log_rows, outcome_rows = [], []
+    for run, run_records in runs.items():
+        entered = False
+        last = None
+        for record in run_records:
+            last = record
+            decision = decide_fn(dict(record))   # decide_fn may add keys to the dict it gets
+            log_rows.append({**{k: record.get(k) for k in bag_test_runner.STATE_COLUMNS},
+                             "model": model_name, "decision": decision})
+            if decision == "enter":
+                entered = True
+                break
+        outcome_rows.append({"run": run, "robot_profile": dataset_name, "model": model_name,
+                             "entered": entered, "timed_out": not entered,
+                             "iterations": last["iteration"] if last else 0,
+                             "timeout": last["timeout"] if last else None})
+    return log_rows, outcome_rows
+
+
+def run_edge_sensitivity(trained_bags, dataset_name, results_root, n_test_runs):
+    """Edge-weight sensitivity for one robot profile.
+
+    trained_bags: {dl_name: trained bag} - every .dl model of this profile.
+    ONE simulation is recorded (record_reference_trajectories) and every
+    (.dl model, edge-weight variant) is evaluated on those very same inputs,
+    so any difference between two points is caused by the edge weight alone
+    (no re-simulation, no different random draws or trajectories).
+
+    The metrics come from the unmodified analyse(), so they are exactly the
+    ones of robot_metrics_summary.csv. Writes
+      <results_root>/edge_sensitivity_metrics_<profile>.csv   (+ plots)
+      <results_root>/<profile>/edge_sensitivity/              (log, outcomes, summary)"""
+    out_dir = os.path.join(results_root, dataset_name, "edge_sensitivity")
+    os.makedirs(out_dir, exist_ok=True)
 
     variants = build_edge_sensitivity_variants()
     print("=" * 70)
-    print(f"STEP 4 - edge-weight sweep: {len(variants)} variants x {n_test_runs} runs")
+    print(f"EDGE SENSITIVITY [{dataset_name}]: {len(trained_bags)} models x {len(variants)} edge-weight "
+          f"variants, replayed on ONE simulation of {n_test_runs} runs")
     print("=" * 70)
 
-    decide_fns, factors_by_model = {}, {}
-    for variant in variants:
-        bag_copy, backprop_copy = copy_and_discount_edges(
-            bag, variant["source_factors"], target_name=EDGE_DISCOUNT_TARGET, verbose=False,
-        )
-        decide_fns[variant["model_name"]] = make_bag_decide_fn(bag_copy, backprop_copy, dataset_name)
-        factors_by_model[variant["model_name"]] = variant["source_factors"]
+    runs = record_reference_trajectories(dataset_name, n_test_runs)
+    print(f"  Recorded {sum(len(r) for r in runs.values())} decision points in {len(runs)} runs.")
 
-    if EDGE_SWEEP_INCLUDE_RL_MAB and rl_mab is not None:
-        rl_models, rl_weights = rl_mab
-        decide_fns.update(make_rl_mab_decide_fns(rl_models, rl_weights))
+    log_rows, outcome_rows, meta = [], [], {}
+    for dl_name, bag in trained_bags.items():
+        for variant in variants:
+            try:
+                bag_copy, backprop_copy = copy_and_discount_edges(
+                    bag, variant["source_factors"], target_name=EDGE_DISCOUNT_TARGET, verbose=False,
+                )
+            except ValueError as err:
+                print(f"  [{dl_name}] skipped (cannot change these edges in this .dl file): {err}")
+                break
+            model_name = f"{dl_name} | {variant['model_name']}"
+            decide_fn = make_bag_decide_fn(bag_copy, backprop_copy, dataset_name)
+            rows, outcomes = replay_decisions(decide_fn, runs, model_name, dataset_name)
+            log_rows += rows
+            outcome_rows += outcomes
+            meta[model_name] = (dl_name, variant["source_factors"])
+        print(f"  [{dl_name}] done")
 
-    outcomes_df, log_df = bag_test_runner.run_tests_all_models(
-        decide_fns, n_test_runs=n_test_runs, robot_profile=dataset_name,
-    )
-    log_path = os.path.join(sweep_dir, "combined_decision_log.csv")
-    outcomes_path = os.path.join(sweep_dir, "test_outcomes.csv")
-    summary_path = os.path.join(sweep_dir, "robot_metrics_summary.csv")
-    log_df.to_csv(log_path, index=False)
-    outcomes_df.to_csv(outcomes_path, index=False)
-    analyse(log_path, summary_path, plots_dir=os.path.join(sweep_dir, "plots"))
+    log_path = os.path.join(out_dir, "combined_decision_log.csv")
+    outcomes_path = os.path.join(out_dir, "test_outcomes.csv")
+    summary_path = os.path.join(out_dir, "robot_metrics_summary.csv")
+    pd.DataFrame(log_rows, columns=bag_test_runner.DF_COLUMNS).to_csv(log_path, index=False)
+    pd.DataFrame(outcome_rows).to_csv(outcomes_path, index=False)
+    analyse(log_path, summary_path,
+            plots_dir=os.path.join(out_dir, "plots") if EDGE_SENSITIVITY_ANALYSE_PLOTS else None)
 
-    # Annotate the summary with the edge factors of each row's model.
+    # Same metric columns as robot_metrics_summary.csv, plus dl_file and the
+    # edge factors of each row's model.
     summary = pd.read_csv(summary_path)
-    model_col = next((c for c in summary.columns if summary[c].astype(str).isin(factors_by_model.keys()).any()), None)
-    if model_col is None:
-        print("  WARNING: could not find the model-name column in the summary; "
-              "edge-factor columns not added.")
-    else:
-        for source in EDGE_SWEEP_BASE:
-            summary[f"edge_factor_{source}"] = summary[model_col].map(
-                lambda m, s=source: factors_by_model[m][s] if m in factors_by_model else np.nan
-            )
-    if "dataset" not in summary.columns:
-        summary.insert(0, "dataset", dataset_name)
-    if "dl_file" not in summary.columns:
-        summary.insert(1, "dl_file", dl_name)
+    summary.insert(1, "dl_file", summary["model"].map(lambda m: meta[m][0]))
+    for source in EDGE_SENSITIVITY_BASE:
+        summary[f"edge_factor_{source}"] = summary["model"].map(lambda m, s=source: meta[m][1][s])
 
-    metrics_path = os.path.join(sweep_dir, "edge_sensitivity_metrics.csv")
+    metrics_path = os.path.join(results_root, f"edge_sensitivity_metrics_{dataset_name}.csv")
     summary.to_csv(metrics_path, index=False)
-    print(f"Saved edge sweep metrics -> {metrics_path}")
-    plot_edge_sensitivity_metrics(summary, os.path.join(sweep_dir, "plots"),
-                            title_suffix=f"[{dataset_name} / {dl_name}]")
+    print(f"Saved edge sensitivity metrics -> {metrics_path}")
+    plot_edge_sensitivity_metrics(
+        summary, os.path.join(results_root, "edge_sensitivity_plots", dataset_name),
+        title_suffix=f"[{dataset_name}]", hue_col="dl_file",
+    )
     return metrics_path
 
 
@@ -978,12 +1049,16 @@ def evaluate_on_test_set(bag, backprop, test_df, model_name, dataset_name, fixed
 #         plots/
 # ---------------------------------------------------------------------- #
 def run_pipeline(dataset_name, dataset_path, dl_name, case_file, results_root="results", n_epochs=10, n_test_runs=500,
-                 rl_mab=None):
+                 rl_mab=None, trained_bags=None):
     """rl_mab: optional (models, weights) tuple for THIS dataset/profile, as
     returned (per profile) by rl_mab_models.train_all_profiles(). If given,
     every RL/MAB/MORL model is simulated alongside the bag models and ends up
     in the combined log, the metrics summary and the radar charts. If None,
-    the pipeline behaves exactly as before (bag models only)."""
+    the pipeline behaves exactly as before (bag models only).
+
+    trained_bags: optional dict; if given, the trained bag of this .dl file is
+    stored in it as trained_bags[dl_name], for the edge-sensitivity analysis
+    that runs once per profile after all its .dl files are trained."""
     results_dir = os.path.join(results_root, dataset_name, dl_name)
     os.makedirs(results_dir, exist_ok=True)
 
@@ -1122,11 +1197,10 @@ def run_pipeline(dataset_name, dataset_path, dl_name, case_file, results_root="r
     plots_dir = os.path.join(results_dir, "plots")
     analyse(log_path, summary_path, plots_dir=plots_dir)
 
-    # ------------------------------------------------------------------ #
-    # Step 4: exhaustive edge-weight sweep on the trained bag.
-    # ------------------------------------------------------------------ #
-    if EDGE_SWEEP_ENABLED:
-        run_edge_sensitivity(bag, dataset_name, dl_name, results_dir, n_test_runs, rl_mab=rl_mab)
+    # The edge-weight sensitivity analysis needs all the .dl models of the
+    # profile at once (one shared simulation), so it runs after the .dl loop.
+    if trained_bags is not None:
+        trained_bags[dl_name] = bag
 
     return {
         "results_dir": results_dir,
@@ -1196,6 +1270,7 @@ if __name__ == "__main__":
 
     run_summaries = []
     for dataset_cfg in DATASETS:
+        trained_bags = {}   # {dl_name: trained bag} of this profile
         for dl_cfg in DL_FILES:
             summary = run_pipeline(
                 dataset_name=dataset_cfg["name"],
@@ -1206,8 +1281,13 @@ if __name__ == "__main__":
                 n_epochs=N_EPOCHS,
                 n_test_runs=N_TEST_RUNS,
                 rl_mab=rl_mab_by_profile.get(dataset_cfg["name"]),
+                trained_bags=trained_bags,
             )
             run_summaries.append({"dataset": dataset_cfg["name"], "dl_file": dl_cfg["name"], **summary})
+
+        # One simulation per profile, shared by every .dl model and edge weight.
+        if EDGE_SENSITIVITY_ENABLED:
+            run_edge_sensitivity(trained_bags, dataset_cfg["name"], RESULTS_ROOT, N_TEST_RUNS)
 
     print("=" * 70)
     print(f"ALL RUNS COMPLETE - {len(run_summaries)} (dataset x .dl file) combinations")
@@ -1216,26 +1296,7 @@ if __name__ == "__main__":
         print(f"  [{run['dataset']} / {run['dl_file']}] -> {run['results_dir']}")
 
     # A flat index of every run, handy for quickly locating any result.
-    # One edge-sweep metrics CSV per robot profile (all .dl files stacked),
-    # directly in the results folder.
-    if EDGE_SWEEP_ENABLED:
-        for dataset_cfg in DATASETS:
-            parts = []
-            for dl_cfg in DL_FILES:
-                part_path = os.path.join(RESULTS_ROOT, dataset_cfg["name"], dl_cfg["name"],
-                                         "edge_sensitivity", "edge_sensitivity_metrics.csv")
-                if os.path.exists(part_path):
-                    parts.append(pd.read_csv(part_path))
-            if parts:
-                out_path = os.path.join(RESULTS_ROOT, f"edge_sensitivity_metrics_{dataset_cfg['name']}.csv")
-                profile_df = pd.concat(parts, ignore_index=True)
-                profile_df.to_csv(out_path, index=False)
-                print(f"Saved edge sweep metrics for {dataset_cfg['name']} -> {out_path}")
-                plot_edge_sensitivity_metrics(
-                    profile_df, os.path.join(RESULTS_ROOT, "edge_sensitivity_plots", dataset_cfg["name"]),
-                    title_suffix=f"[{dataset_cfg['name']}]", hue_col="dl_file",
-                )
-
+    # A flat index of every run, handy for quickly locating any result.
     index_path = os.path.join(RESULTS_ROOT, "run_index.csv")
     pd.DataFrame(run_summaries).to_csv(index_path, index=False)
     print(f"Saved run index -> {index_path}")

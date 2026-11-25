@@ -1,51 +1,51 @@
-dataset,dl_file,robot_profile,model,success_pct,skipped_queue_pct,priority_violations_pct,impairment_squishments_pct,elevators_waited_mean,edge_factor_inside_comfort,edge_factor_breaking_queue,edge_factor_robot_urgency
-time-efficient,normal,time-efficient,"Sweep: comfort=1, queue=1, urgency=0",0.0,0.0,0.0,0.0,0.0,1,1,0.0
-time-efficient,normal,time-efficient,"Sweep: comfort=1, queue=1, urgency=0.25",0.0,0.0,0.0,0.0,0.0,1,1,0.25
-time-efficient,normal,time-efficient,"Sweep: comfort=1, queue=1, urgency=0.5",0.0,0.0,0.0,0.0,0.0,1,1,0.5
-time-efficient,normal,time-efficient,"Sweep: comfort=1, queue=1, urgency=0.75",79.60000000000001,0.0,0.0,0.0,2.585427135678392,1,1,0.75
-time-efficient,normal,time-efficient,"Sweep: comfort=1, queue=1, urgency=1",73.0,6.301369863013699,0.0,0.0,2.5397260273972604,1,1,1.0
-time-efficient,normal,time-efficient,"Sweep: comfort=1, queue=1, urgency=1.25",97.6,15.163934426229508,8.60655737704918,15.368852459016392,1.9877049180327868,1,1,1.25
-time-efficient,normal,time-efficient,"Sweep: comfort=1, queue=1, urgency=1.5",97.8,22.699386503067483,17.177914110429448,22.290388548057265,1.6646216768916156,1,1,1.5
-time-efficient,normal,time-efficient,"Sweep: comfort=1, queue=1, urgency=1.75",100.0,29.0,19.4,30.2,1.466,1,1,1.75
-time-efficient,normal,time-efficient,"Sweep: comfort=1, queue=1, urgency=2",100.0,36.0,22.8,31.0,1.32,1,1,2.0
-time-efficient,normal,time-efficient,"Sweep: comfort=1, queue=1, urgency=3",100.0,55.8,43.0,43.6,0.398,1,1,3.0
-time-efficient,hidden_5,time-efficient,"Sweep: comfort=1, queue=1, urgency=0",0.0,0.0,0.0,0.0,0.0,1,1,0.0
-time-efficient,hidden_5,time-efficient,"Sweep: comfort=1, queue=1, urgency=0.25",66.0,0.0,0.0,0.0,3.033333333333333,1,1,0.25
-time-efficient,hidden_5,time-efficient,"Sweep: comfort=1, queue=1, urgency=0.5",71.2,3.089887640449438,0.0,0.0,2.783707865168539,1,1,0.5
-time-efficient,hidden_5,time-efficient,"Sweep: comfort=1, queue=1, urgency=0.75",95.4,5.660377358490567,0.0,32.075471698113205,2.708595387840671,1,1,0.75
-time-efficient,hidden_5,time-efficient,"Sweep: comfort=1, queue=1, urgency=1",94.8,6.751054852320674,0.0,35.44303797468354,2.449367088607595,1,1,1.0
-time-efficient,hidden_5,time-efficient,"Sweep: comfort=1, queue=1, urgency=1.25",98.6,12.778904665314403,4.056795131845842,38.74239350912779,2.4279918864097363,1,1,1.25
-time-efficient,hidden_5,time-efficient,"Sweep: comfort=1, queue=1, urgency=1.5",99.0,16.161616161616163,6.4646464646464645,38.78787878787879,2.387878787878788,1,1,1.5
-time-efficient,hidden_5,time-efficient,"Sweep: comfort=1, queue=1, urgency=1.75",100.0,21.4,11.0,39.4,2.234,1,1,1.75
-time-efficient,hidden_5,time-efficient,"Sweep: comfort=1, queue=1, urgency=2",100.0,21.4,12.2,39.6,2.194,1,1,2.0
-time-efficient,hidden_5,time-efficient,"Sweep: comfort=1, queue=1, urgency=3",100.0,24.6,15.0,38.6,2.06,1,1,3.0
-time-efficient,hidden_10,time-efficient,"Sweep: comfort=1, queue=1, urgency=0",0.0,0.0,0.0,0.0,0.0,1,1,0.0
-time-efficient,hidden_10,time-efficient,"Sweep: comfort=1, queue=1, urgency=0.25",65.4,0.0,0.0,0.0,2.831804281345566,1,1,0.25
-time-efficient,hidden_10,time-efficient,"Sweep: comfort=1, queue=1, urgency=0.5",68.0,4.117647058823529,0.0,0.0,2.8117647058823527,1,1,0.5
-time-efficient,hidden_10,time-efficient,"Sweep: comfort=1, queue=1, urgency=0.75",94.4,4.23728813559322,0.0,32.41525423728814,2.692796610169492,1,1,0.75
-time-efficient,hidden_10,time-efficient,"Sweep: comfort=1, queue=1, urgency=1",96.4,4.356846473029045,0.0,36.30705394190871,2.5394190871369293,1,1,1.0
-time-efficient,hidden_10,time-efficient,"Sweep: comfort=1, queue=1, urgency=1.25",97.8,8.997955010224949,5.930470347648262,39.87730061349693,2.390593047034765,1,1,1.25
-time-efficient,hidden_10,time-efficient,"Sweep: comfort=1, queue=1, urgency=1.5",98.6,11.76470588235294,5.070993914807302,37.52535496957404,2.3225152129817443,1,1,1.5
-time-efficient,hidden_10,time-efficient,"Sweep: comfort=1, queue=1, urgency=1.75",100.0,16.6,11.0,34.599999999999994,2.23,1,1,1.75
-time-efficient,hidden_10,time-efficient,"Sweep: comfort=1, queue=1, urgency=2",100.0,17.0,11.4,39.4,2.17,1,1,2.0
-time-efficient,hidden_10,time-efficient,"Sweep: comfort=1, queue=1, urgency=3",100.0,21.6,13.4,38.4,2.042,1,1,3.0
-time-efficient,hidden_5_fc,time-efficient,"Sweep: comfort=1, queue=1, urgency=0",0.0,0.0,0.0,0.0,0.0,1,1,0.0
-time-efficient,hidden_5_fc,time-efficient,"Sweep: comfort=1, queue=1, urgency=0.25",97.8,8.997955010224949,3.476482617586912,36.809815950920246,2.9877300613496933,1,1,0.25
-time-efficient,hidden_5_fc,time-efficient,"Sweep: comfort=1, queue=1, urgency=0.5",97.2,9.876543209876544,4.320987654320987,35.390946502057616,2.98559670781893,1,1,0.5
-time-efficient,hidden_5_fc,time-efficient,"Sweep: comfort=1, queue=1, urgency=0.75",98.4,9.146341463414634,2.845528455284553,31.30081300813008,2.841463414634146,1,1,0.75
-time-efficient,hidden_5_fc,time-efficient,"Sweep: comfort=1, queue=1, urgency=1",97.8,8.997955010224949,3.885480572597137,34.76482617586912,2.871165644171779,1,1,1.0
-time-efficient,hidden_5_fc,time-efficient,"Sweep: comfort=1, queue=1, urgency=1.25",98.2,8.350305498981669,3.462321792260693,33.604887983706725,2.7820773930753564,1,1,1.25
-time-efficient,hidden_5_fc,time-efficient,"Sweep: comfort=1, queue=1, urgency=1.5",98.6,9.939148073022311,4.86815415821501,29.411764705882355,2.707910750507099,1,1,1.5
-time-efficient,hidden_5_fc,time-efficient,"Sweep: comfort=1, queue=1, urgency=1.75",98.0,9.183673469387756,4.081632653061225,32.44897959183673,2.7346938775510203,1,1,1.75
-time-efficient,hidden_5_fc,time-efficient,"Sweep: comfort=1, queue=1, urgency=2",97.4,10.472279260780288,2.8747433264887063,31.622176591375773,2.724845995893224,1,1,2.0
-time-efficient,hidden_5_fc,time-efficient,"Sweep: comfort=1, queue=1, urgency=3",97.6,11.885245901639344,5.122950819672131,30.737704918032787,2.6639344262295084,1,1,3.0
-time-efficient,hidden_10_fc,time-efficient,"Sweep: comfort=1, queue=1, urgency=0",0.0,0.0,0.0,0.0,0.0,1,1,0.0
-time-efficient,hidden_10_fc,time-efficient,"Sweep: comfort=1, queue=1, urgency=0.25",97.8,7.566462167689162,2.8629856850715747,34.355828220858896,2.950920245398773,1,1,0.25
-time-efficient,hidden_10_fc,time-efficient,"Sweep: comfort=1, queue=1, urgency=0.5",98.6,10.953346855983773,4.462474645030426,30.8316430020284,2.845841784989858,1,1,0.5
-time-efficient,hidden_10_fc,time-efficient,"Sweep: comfort=1, queue=1, urgency=0.75",99.2,9.879032258064516,4.233870967741935,34.07258064516129,2.7701612903225805,1,1,0.75
-time-efficient,hidden_10_fc,time-efficient,"Sweep: comfort=1, queue=1, urgency=1",99.0,10.1010101010101,4.646464646464646,33.131313131313135,2.787878787878788,1,1,1.0
-time-efficient,hidden_10_fc,time-efficient,"Sweep: comfort=1, queue=1, urgency=1.25",97.4,10.472279260780288,3.4907597535934287,30.800821355236145,2.7104722792607805,1,1,1.25
-time-efficient,hidden_10_fc,time-efficient,"Sweep: comfort=1, queue=1, urgency=1.5",98.6,10.141987829614605,3.2454361054766734,34.68559837728195,2.734279918864097,1,1,1.5
-time-efficient,hidden_10_fc,time-efficient,"Sweep: comfort=1, queue=1, urgency=1.75",97.8,8.997955010224949,4.9079754601227,28.629856850715747,2.693251533742332,1,1,1.75
-time-efficient,hidden_10_fc,time-efficient,"Sweep: comfort=1, queue=1, urgency=2",98.8,9.31174089068826,4.453441295546559,33.603238866396765,2.6497975708502026,1,1,2.0
-time-efficient,hidden_10_fc,time-efficient,"Sweep: comfort=1, queue=1, urgency=3",99.2,9.07258064516129,4.637096774193548,31.65322580645161,2.6411290322580645,1,1,3.0
+robot_profile,dl_file,model,success_pct,skipped_queue_pct,priority_violations_pct,impairment_squishments_pct,elevators_waited_mean,edge_factor_inside_comfort,edge_factor_breaking_queue,edge_factor_robot_urgency
+time-efficient,hidden_10,"hidden_10 | comfort=1, queue=1, urgency=0",0.0,0.0,0.0,0.0,0.0,1,1,0.0
+time-efficient,hidden_10,"hidden_10 | comfort=1, queue=1, urgency=0.25",59.6,0.0,0.0,0.0,3.0604026845637584,1,1,0.25
+time-efficient,hidden_10,"hidden_10 | comfort=1, queue=1, urgency=0.5",65.8,3.64741641337386,0.0,0.0,2.866261398176292,1,1,0.5
+time-efficient,hidden_10,"hidden_10 | comfort=1, queue=1, urgency=0.75",96.0,2.9166666666666665,0.0,36.45833333333333,2.7875,1,1,0.75
+time-efficient,hidden_10,"hidden_10 | comfort=1, queue=1, urgency=1",97.2,6.172839506172839,0.0,40.32921810699588,2.592592592592593,1,1,1.0
+time-efficient,hidden_10,"hidden_10 | comfort=1, queue=1, urgency=1.25",98.8,13.765182186234815,7.6923076923076925,40.2834008097166,2.4554655870445345,1,1,1.25
+time-efficient,hidden_10,"hidden_10 | comfort=1, queue=1, urgency=1.5",99.0,15.151515151515152,8.484848484848486,40.2020202020202,2.37979797979798,1,1,1.5
+time-efficient,hidden_10,"hidden_10 | comfort=1, queue=1, urgency=1.75",100.0,19.0,12.0,40.400000000000006,2.31,1,1,1.75
+time-efficient,hidden_10,"hidden_10 | comfort=1, queue=1, urgency=2",100.0,19.6,12.8,41.0,2.254,1,1,2.0
+time-efficient,hidden_10,"hidden_10 | comfort=1, queue=1, urgency=3",100.0,21.8,14.6,40.6,2.128,1,1,3.0
+time-efficient,hidden_10_fc,"hidden_10_fc | comfort=1, queue=1, urgency=0",0.0,0.0,0.0,0.0,0.0,1,1,0.0
+time-efficient,hidden_10_fc,"hidden_10_fc | comfort=1, queue=1, urgency=0.25",98.4,7.520325203252034,2.4390243902439024,41.05691056910569,3.018292682926829,1,1,0.25
+time-efficient,hidden_10_fc,"hidden_10_fc | comfort=1, queue=1, urgency=0.5",98.4,8.130081300813007,2.642276422764228,37.80487804878049,2.9410569105691056,1,1,0.5
+time-efficient,hidden_10_fc,"hidden_10_fc | comfort=1, queue=1, urgency=0.75",98.4,8.536585365853659,3.048780487804878,36.58536585365854,2.8841463414634148,1,1,0.75
+time-efficient,hidden_10_fc,"hidden_10_fc | comfort=1, queue=1, urgency=1",98.4,8.739837398373984,3.048780487804878,36.78861788617886,2.847560975609756,1,1,1.0
+time-efficient,hidden_10_fc,"hidden_10_fc | comfort=1, queue=1, urgency=1.25",98.4,9.146341463414634,3.252032520325204,36.38211382113821,2.8069105691056917,1,1,1.25
+time-efficient,hidden_10_fc,"hidden_10_fc | comfort=1, queue=1, urgency=1.5",98.4,9.34959349593496,3.252032520325204,35.56910569105691,2.7703252032520327,1,1,1.5
+time-efficient,hidden_10_fc,"hidden_10_fc | comfort=1, queue=1, urgency=1.75",98.4,9.34959349593496,3.252032520325204,35.56910569105691,2.7439024390243905,1,1,1.75
+time-efficient,hidden_10_fc,"hidden_10_fc | comfort=1, queue=1, urgency=2",98.4,9.552845528455284,3.252032520325204,34.756097560975604,2.7215447154471546,1,1,2.0
+time-efficient,hidden_10_fc,"hidden_10_fc | comfort=1, queue=1, urgency=3",98.4,9.552845528455284,3.252032520325204,34.34959349593496,2.6727642276422765,1,1,3.0
+time-efficient,hidden_5,"hidden_5 | comfort=1, queue=1, urgency=0",0.0,0.0,0.0,0.0,0.0,1,1,0.0
+time-efficient,hidden_5,"hidden_5 | comfort=1, queue=1, urgency=0.25",59.6,0.0,0.0,0.0,3.0604026845637584,1,1,0.25
+time-efficient,hidden_5,"hidden_5 | comfort=1, queue=1, urgency=0.5",66.0,3.636363636363636,0.0,0.0,2.8666666666666667,1,1,0.5
+time-efficient,hidden_5,"hidden_5 | comfort=1, queue=1, urgency=0.75",96.0,3.333333333333333,0.0,36.04166666666666,2.747916666666667,1,1,0.75
+time-efficient,hidden_5,"hidden_5 | comfort=1, queue=1, urgency=1",97.2,6.172839506172839,0.0,40.53497942386832,2.565843621399177,1,1,1.0
+time-efficient,hidden_5,"hidden_5 | comfort=1, queue=1, urgency=1.25",98.8,14.37246963562753,7.894736842105263,40.08097165991903,2.42914979757085,1,1,1.25
+time-efficient,hidden_5,"hidden_5 | comfort=1, queue=1, urgency=1.5",99.0,15.353535353535351,8.484848484848486,39.5959595959596,2.345454545454545,1,1,1.5
+time-efficient,hidden_5,"hidden_5 | comfort=1, queue=1, urgency=1.75",100.0,19.0,12.0,40.6,2.28,1,1,1.75
+time-efficient,hidden_5,"hidden_5 | comfort=1, queue=1, urgency=2",100.0,20.0,13.0,40.0,2.202,1,1,2.0
+time-efficient,hidden_5,"hidden_5 | comfort=1, queue=1, urgency=3",100.0,22.2,14.8,40.6,2.084,1,1,3.0
+time-efficient,hidden_5_fc,"hidden_5_fc | comfort=1, queue=1, urgency=0",0.0,0.0,0.0,0.0,0.0,1,1,0.0
+time-efficient,hidden_5_fc,"hidden_5_fc | comfort=1, queue=1, urgency=0.25",98.4,7.520325203252034,2.4390243902439024,40.65040650406504,3.0142276422764227,1,1,0.25
+time-efficient,hidden_5_fc,"hidden_5_fc | comfort=1, queue=1, urgency=0.5",98.4,8.130081300813007,2.642276422764228,37.39837398373984,2.934959349593496,1,1,0.5
+time-efficient,hidden_5_fc,"hidden_5_fc | comfort=1, queue=1, urgency=0.75",98.4,8.536585365853659,3.048780487804878,36.58536585365854,2.8841463414634148,1,1,0.75
+time-efficient,hidden_5_fc,"hidden_5_fc | comfort=1, queue=1, urgency=1",98.4,8.739837398373984,3.048780487804878,36.78861788617886,2.8353658536585367,1,1,1.0
+time-efficient,hidden_5_fc,"hidden_5_fc | comfort=1, queue=1, urgency=1.25",98.4,9.146341463414634,3.252032520325204,36.38211382113821,2.796747967479675,1,1,1.25
+time-efficient,hidden_5_fc,"hidden_5_fc | comfort=1, queue=1, urgency=1.5",98.4,9.34959349593496,3.252032520325204,35.77235772357724,2.7621951219512195,1,1,1.5
+time-efficient,hidden_5_fc,"hidden_5_fc | comfort=1, queue=1, urgency=1.75",98.4,9.34959349593496,3.252032520325204,34.959349593495936,2.7378048780487805,1,1,1.75
+time-efficient,hidden_5_fc,"hidden_5_fc | comfort=1, queue=1, urgency=2",98.4,9.552845528455284,3.252032520325204,34.552845528455286,2.7195121951219514,1,1,2.0
+time-efficient,hidden_5_fc,"hidden_5_fc | comfort=1, queue=1, urgency=3",98.4,9.552845528455284,3.252032520325204,33.94308943089431,2.66260162601626,1,1,3.0
+time-efficient,normal,"normal | comfort=1, queue=1, urgency=0",0.0,0.0,0.0,0.0,0.0,1,1,0.0
+time-efficient,normal,"normal | comfort=1, queue=1, urgency=0.25",0.0,0.0,0.0,0.0,0.0,1,1,0.25
+time-efficient,normal,"normal | comfort=1, queue=1, urgency=0.5",0.0,0.0,0.0,0.0,0.0,1,1,0.5
+time-efficient,normal,"normal | comfort=1, queue=1, urgency=0.75",70.39999999999999,0.0,0.0,0.0,2.6193181818181817,1,1,0.75
+time-efficient,normal,"normal | comfort=1, queue=1, urgency=1",72.0,6.111111111111111,0.0,0.0,2.4833333333333334,1,1,1.0
+time-efficient,normal,"normal | comfort=1, queue=1, urgency=1.25",98.6,14.60446247464503,9.533468559837727,15.010141987829616,1.8843813387423936,1,1,1.25
+time-efficient,normal,"normal | comfort=1, queue=1, urgency=1.5",99.2,21.370967741935484,15.524193548387096,22.782258064516128,1.5504032258064515,1,1,1.5
+time-efficient,normal,"normal | comfort=1, queue=1, urgency=1.75",100.0,29.0,18.0,27.0,1.38,1,1,1.75
+time-efficient,normal,"normal | comfort=1, queue=1, urgency=2",100.0,33.6,20.0,28.4,1.234,1,1,2.0
+time-efficient,normal,"normal | comfort=1, queue=1, urgency=3",100.0,59.4,43.0,38.4,0.4,1,1,3.0

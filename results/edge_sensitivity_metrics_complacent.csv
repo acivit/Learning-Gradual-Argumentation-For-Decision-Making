@@ -1,51 +1,51 @@
-dataset,dl_file,robot_profile,model,success_pct,skipped_queue_pct,priority_violations_pct,impairment_squishments_pct,elevators_waited_mean,edge_factor_inside_comfort,edge_factor_breaking_queue,edge_factor_robot_urgency
-complacent,normal,complacent,"Sweep: comfort=1, queue=1, urgency=0",0.0,0.0,0.0,0.0,0.0,1,1,0.0
-complacent,normal,complacent,"Sweep: comfort=1, queue=1, urgency=0.25",0.0,0.0,0.0,0.0,0.0,1,1,0.25
-complacent,normal,complacent,"Sweep: comfort=1, queue=1, urgency=0.5",0.0,0.0,0.0,0.0,0.0,1,1,0.5
-complacent,normal,complacent,"Sweep: comfort=1, queue=1, urgency=0.75",49.2,0.0,0.0,0.0,3.4390243902439024,1,1,0.75
-complacent,normal,complacent,"Sweep: comfort=1, queue=1, urgency=1",49.8,0.8032128514056224,0.0,0.0,3.4056224899598395,1,1,1.0
-complacent,normal,complacent,"Sweep: comfort=1, queue=1, urgency=1.25",66.8,11.676646706586826,8.982035928143713,0.0,1.907185628742515,1,1,1.25
-complacent,normal,complacent,"Sweep: comfort=1, queue=1, urgency=1.5",82.19999999999999,8.02919708029197,6.326034063260341,17.0316301703163,2.2068126520681264,1,1,1.5
-complacent,normal,complacent,"Sweep: comfort=1, queue=1, urgency=1.75",97.8,6.339468302658487,4.4989775051124745,24.130879345603272,2.3026584867075663,1,1,1.75
-complacent,normal,complacent,"Sweep: comfort=1, queue=1, urgency=2",100.0,20.4,7.399999999999999,22.0,1.996,1,1,2.0
-complacent,normal,complacent,"Sweep: comfort=1, queue=1, urgency=3",100.0,45.6,35.2,38.8,0.666,1,1,3.0
-complacent,hidden_5,complacent,"Sweep: comfort=1, queue=1, urgency=0",0.0,0.0,0.0,0.0,0.0,1,1,0.0
-complacent,hidden_5,complacent,"Sweep: comfort=1, queue=1, urgency=0.25",49.4,0.0,0.0,0.0,3.5668016194331984,1,1,0.25
-complacent,hidden_5,complacent,"Sweep: comfort=1, queue=1, urgency=0.5",48.4,0.0,0.0,0.0,3.636363636363636,1,1,0.5
-complacent,hidden_5,complacent,"Sweep: comfort=1, queue=1, urgency=0.75",46.2,0.0,0.0,0.0,3.536796536796537,1,1,0.75
-complacent,hidden_5,complacent,"Sweep: comfort=1, queue=1, urgency=1",51.6,12.790697674418606,8.13953488372093,0.0,3.507751937984496,1,1,1.0
-complacent,hidden_5,complacent,"Sweep: comfort=1, queue=1, urgency=1.25",97.2,5.1440329218107,4.11522633744856,49.38271604938272,3.582304526748972,1,1,1.25
-complacent,hidden_5,complacent,"Sweep: comfort=1, queue=1, urgency=1.5",97.8,4.9079754601227,3.067484662576687,47.443762781186095,3.5439672801636,1,1,1.5
-complacent,hidden_5,complacent,"Sweep: comfort=1, queue=1, urgency=1.75",98.2,7.331975560081466,4.073319755600815,44.80651731160896,3.545824847250509,1,1,1.75
-complacent,hidden_5,complacent,"Sweep: comfort=1, queue=1, urgency=2",100.0,12.2,8.6,52.8,3.448,1,1,2.0
-complacent,hidden_5,complacent,"Sweep: comfort=1, queue=1, urgency=3",100.0,12.8,8.200000000000001,48.4,3.498,1,1,3.0
-complacent,hidden_10,complacent,"Sweep: comfort=1, queue=1, urgency=0",0.0,0.0,0.0,0.0,0.0,1,1,0.0
-complacent,hidden_10,complacent,"Sweep: comfort=1, queue=1, urgency=0.25",52.6,0.0,0.0,0.0,3.425855513307985,1,1,0.25
-complacent,hidden_10,complacent,"Sweep: comfort=1, queue=1, urgency=0.5",46.8,0.0,0.0,0.0,3.388888888888889,1,1,0.5
-complacent,hidden_10,complacent,"Sweep: comfort=1, queue=1, urgency=0.75",44.0,0.0,0.0,0.0,3.359090909090909,1,1,0.75
-complacent,hidden_10,complacent,"Sweep: comfort=1, queue=1, urgency=1",46.2,5.194805194805195,0.0,0.0,3.4545454545454546,1,1,1.0
-complacent,hidden_10,complacent,"Sweep: comfort=1, queue=1, urgency=1.25",97.8,5.725971370143149,4.703476482617587,47.85276073619632,3.439672801635992,1,1,1.25
-complacent,hidden_10,complacent,"Sweep: comfort=1, queue=1, urgency=1.5",98.2,6.720977596741344,3.665987780040733,50.101832993890014,3.419551934826884,1,1,1.5
-complacent,hidden_10,complacent,"Sweep: comfort=1, queue=1, urgency=1.75",98.0,6.938775510204081,4.489795918367347,49.18367346938776,3.393877551020408,1,1,1.75
-complacent,hidden_10,complacent,"Sweep: comfort=1, queue=1, urgency=2",100.0,13.2,9.8,48.4,3.338,1,1,2.0
-complacent,hidden_10,complacent,"Sweep: comfort=1, queue=1, urgency=3",100.0,12.2,9.6,50.6,3.336,1,1,3.0
-complacent,hidden_5_fc,complacent,"Sweep: comfort=1, queue=1, urgency=0",0.0,0.0,0.0,0.0,0.0,1,1,0.0
-complacent,hidden_5_fc,complacent,"Sweep: comfort=1, queue=1, urgency=0.25",47.6,0.0,0.0,0.0,3.4159663865546217,1,1,0.25
-complacent,hidden_5_fc,complacent,"Sweep: comfort=1, queue=1, urgency=0.5",46.0,0.0,0.0,0.0,3.38695652173913,1,1,0.5
-complacent,hidden_5_fc,complacent,"Sweep: comfort=1, queue=1, urgency=0.75",51.0,0.0,0.0,0.0,3.2901960784313724,1,1,0.75
-complacent,hidden_5_fc,complacent,"Sweep: comfort=1, queue=1, urgency=1",49.0,1.2244897959183674,0.0,0.0,3.3755102040816327,1,1,1.0
-complacent,hidden_5_fc,complacent,"Sweep: comfort=1, queue=1, urgency=1.25",48.8,0.4098360655737705,0.0,0.0,3.3524590163934427,1,1,1.25
-complacent,hidden_5_fc,complacent,"Sweep: comfort=1, queue=1, urgency=1.5",44.0,1.818181818181818,0.0,0.0,3.390909090909091,1,1,1.5
-complacent,hidden_5_fc,complacent,"Sweep: comfort=1, queue=1, urgency=1.75",47.6,2.5210084033613445,0.0,0.0,3.1512605042016806,1,1,1.75
-complacent,hidden_5_fc,complacent,"Sweep: comfort=1, queue=1, urgency=2",45.8,2.6200873362445414,0.0,0.0,3.366812227074236,1,1,2.0
-complacent,hidden_5_fc,complacent,"Sweep: comfort=1, queue=1, urgency=3",52.6,1.9011406844106464,0.0,0.0,3.425855513307985,1,1,3.0
-complacent,hidden_10_fc,complacent,"Sweep: comfort=1, queue=1, urgency=0",0.0,0.0,0.0,0.0,0.0,1,1,0.0
-complacent,hidden_10_fc,complacent,"Sweep: comfort=1, queue=1, urgency=0.25",48.4,0.0,0.0,0.0,3.43801652892562,1,1,0.25
-complacent,hidden_10_fc,complacent,"Sweep: comfort=1, queue=1, urgency=0.5",51.8,0.0,0.0,0.0,3.359073359073359,1,1,0.5
-complacent,hidden_10_fc,complacent,"Sweep: comfort=1, queue=1, urgency=0.75",48.0,0.0,0.0,0.0,3.4291666666666667,1,1,0.75
-complacent,hidden_10_fc,complacent,"Sweep: comfort=1, queue=1, urgency=1",46.8,0.0,0.0,0.0,3.4444444444444446,1,1,1.0
-complacent,hidden_10_fc,complacent,"Sweep: comfort=1, queue=1, urgency=1.25",49.6,0.4032258064516129,0.0,0.0,3.350806451612903,1,1,1.25
-complacent,hidden_10_fc,complacent,"Sweep: comfort=1, queue=1, urgency=1.5",49.4,0.8097165991902834,0.0,0.0,3.404858299595141,1,1,1.5
-complacent,hidden_10_fc,complacent,"Sweep: comfort=1, queue=1, urgency=1.75",51.6,0.7751937984496124,0.0,0.0,3.4728682170542635,1,1,1.75
-complacent,hidden_10_fc,complacent,"Sweep: comfort=1, queue=1, urgency=2",49.2,2.845528455284553,0.0,0.0,3.394308943089431,1,1,2.0
-complacent,hidden_10_fc,complacent,"Sweep: comfort=1, queue=1, urgency=3",49.6,2.0161290322580645,0.0,0.0,3.2580645161290325,1,1,3.0
+robot_profile,dl_file,model,success_pct,skipped_queue_pct,priority_violations_pct,impairment_squishments_pct,elevators_waited_mean,edge_factor_inside_comfort,edge_factor_breaking_queue,edge_factor_robot_urgency
+complacent,hidden_10,"hidden_10 | comfort=1, queue=1, urgency=0",0.0,0.0,0.0,0.0,0.0,1,1,0.0
+complacent,hidden_10,"hidden_10 | comfort=1, queue=1, urgency=0.25",41.2,0.0,0.0,0.0,3.5436893203883497,1,1,0.25
+complacent,hidden_10,"hidden_10 | comfort=1, queue=1, urgency=0.5",41.2,0.0,0.0,0.0,3.5436893203883497,1,1,0.5
+complacent,hidden_10,"hidden_10 | comfort=1, queue=1, urgency=0.75",41.2,0.0,0.0,0.0,3.5436893203883497,1,1,0.75
+complacent,hidden_10,"hidden_10 | comfort=1, queue=1, urgency=1",42.4,5.660377358490567,0.0,0.0,3.5047169811320757,1,1,1.0
+complacent,hidden_10,"hidden_10 | comfort=1, queue=1, urgency=1.25",98.0,6.530612244897959,4.6938775510204085,55.30612244897959,3.440816326530612,1,1,1.25
+complacent,hidden_10,"hidden_10 | comfort=1, queue=1, urgency=1.5",98.0,6.530612244897959,4.6938775510204085,55.30612244897959,3.440816326530612,1,1,1.5
+complacent,hidden_10,"hidden_10 | comfort=1, queue=1, urgency=1.75",98.0,6.530612244897959,4.6938775510204085,55.30612244897959,3.440816326530612,1,1,1.75
+complacent,hidden_10,"hidden_10 | comfort=1, queue=1, urgency=2",100.0,12.8,8.6,56.2,3.39,1,1,2.0
+complacent,hidden_10,"hidden_10 | comfort=1, queue=1, urgency=3",100.0,12.8,8.6,56.2,3.39,1,1,3.0
+complacent,hidden_10_fc,"hidden_10_fc | comfort=1, queue=1, urgency=0",0.0,0.0,0.0,0.0,0.0,1,1,0.0
+complacent,hidden_10_fc,"hidden_10_fc | comfort=1, queue=1, urgency=0.25",41.2,0.0,0.0,0.0,3.5436893203883497,1,1,0.25
+complacent,hidden_10_fc,"hidden_10_fc | comfort=1, queue=1, urgency=0.5",41.2,0.0,0.0,0.0,3.5436893203883497,1,1,0.5
+complacent,hidden_10_fc,"hidden_10_fc | comfort=1, queue=1, urgency=0.75",41.2,0.0,0.0,0.0,3.5436893203883497,1,1,0.75
+complacent,hidden_10_fc,"hidden_10_fc | comfort=1, queue=1, urgency=1",41.2,0.0,0.0,0.0,3.5436893203883497,1,1,1.0
+complacent,hidden_10_fc,"hidden_10_fc | comfort=1, queue=1, urgency=1.25",41.2,0.0,0.0,0.0,3.5436893203883497,1,1,1.25
+complacent,hidden_10_fc,"hidden_10_fc | comfort=1, queue=1, urgency=1.5",41.2,0.4854368932038834,0.0,0.0,3.5388349514563107,1,1,1.5
+complacent,hidden_10_fc,"hidden_10_fc | comfort=1, queue=1, urgency=1.75",41.2,0.9708737864077668,0.0,0.0,3.533980582524272,1,1,1.75
+complacent,hidden_10_fc,"hidden_10_fc | comfort=1, queue=1, urgency=2",41.2,0.9708737864077668,0.0,0.0,3.533980582524272,1,1,2.0
+complacent,hidden_10_fc,"hidden_10_fc | comfort=1, queue=1, urgency=3",41.2,1.4563106796116505,0.0,0.0,3.529126213592233,1,1,3.0
+complacent,hidden_5,"hidden_5 | comfort=1, queue=1, urgency=0",0.0,0.0,0.0,0.0,0.0,1,1,0.0
+complacent,hidden_5,"hidden_5 | comfort=1, queue=1, urgency=0.25",41.2,0.0,0.0,0.0,3.5436893203883497,1,1,0.25
+complacent,hidden_5,"hidden_5 | comfort=1, queue=1, urgency=0.5",41.2,0.0,0.0,0.0,3.5436893203883497,1,1,0.5
+complacent,hidden_5,"hidden_5 | comfort=1, queue=1, urgency=0.75",41.2,0.0,0.0,0.0,3.5436893203883497,1,1,0.75
+complacent,hidden_5,"hidden_5 | comfort=1, queue=1, urgency=1",43.8,14.61187214611872,10.50228310502283,0.0,3.401826484018265,1,1,1.0
+complacent,hidden_5,"hidden_5 | comfort=1, queue=1, urgency=1.25",98.0,6.530612244897959,4.6938775510204085,55.30612244897959,3.440816326530612,1,1,1.25
+complacent,hidden_5,"hidden_5 | comfort=1, queue=1, urgency=1.5",98.0,6.530612244897959,4.6938775510204085,55.30612244897959,3.440816326530612,1,1,1.5
+complacent,hidden_5,"hidden_5 | comfort=1, queue=1, urgency=1.75",99.0,8.88888888888889,4.646464646464646,55.757575757575765,3.42020202020202,1,1,1.75
+complacent,hidden_5,"hidden_5 | comfort=1, queue=1, urgency=2",100.0,12.8,8.6,56.2,3.39,1,1,2.0
+complacent,hidden_5,"hidden_5 | comfort=1, queue=1, urgency=3",100.0,12.8,8.6,56.2,3.39,1,1,3.0
+complacent,hidden_5_fc,"hidden_5_fc | comfort=1, queue=1, urgency=0",0.0,0.0,0.0,0.0,0.0,1,1,0.0
+complacent,hidden_5_fc,"hidden_5_fc | comfort=1, queue=1, urgency=0.25",41.2,0.0,0.0,0.0,3.5436893203883497,1,1,0.25
+complacent,hidden_5_fc,"hidden_5_fc | comfort=1, queue=1, urgency=0.5",41.2,0.0,0.0,0.0,3.5436893203883497,1,1,0.5
+complacent,hidden_5_fc,"hidden_5_fc | comfort=1, queue=1, urgency=0.75",41.2,0.0,0.0,0.0,3.5436893203883497,1,1,0.75
+complacent,hidden_5_fc,"hidden_5_fc | comfort=1, queue=1, urgency=1",41.2,0.0,0.0,0.0,3.5436893203883497,1,1,1.0
+complacent,hidden_5_fc,"hidden_5_fc | comfort=1, queue=1, urgency=1.25",41.2,0.0,0.0,0.0,3.5436893203883497,1,1,1.25
+complacent,hidden_5_fc,"hidden_5_fc | comfort=1, queue=1, urgency=1.5",41.2,0.4854368932038834,0.0,0.0,3.5388349514563107,1,1,1.5
+complacent,hidden_5_fc,"hidden_5_fc | comfort=1, queue=1, urgency=1.75",41.2,0.9708737864077668,0.0,0.0,3.533980582524272,1,1,1.75
+complacent,hidden_5_fc,"hidden_5_fc | comfort=1, queue=1, urgency=2",41.2,0.9708737864077668,0.0,0.0,3.533980582524272,1,1,2.0
+complacent,hidden_5_fc,"hidden_5_fc | comfort=1, queue=1, urgency=3",41.4,1.932367149758454,0.0,0.0,3.5217391304347827,1,1,3.0
+complacent,normal,"normal | comfort=1, queue=1, urgency=0",0.0,0.0,0.0,0.0,0.0,1,1,0.0
+complacent,normal,"normal | comfort=1, queue=1, urgency=0.25",0.0,0.0,0.0,0.0,0.0,1,1,0.25
+complacent,normal,"normal | comfort=1, queue=1, urgency=0.5",0.0,0.0,0.0,0.0,0.0,1,1,0.5
+complacent,normal,"normal | comfort=1, queue=1, urgency=0.75",41.2,0.0,0.0,0.0,3.5436893203883497,1,1,0.75
+complacent,normal,"normal | comfort=1, queue=1, urgency=1",41.8,1.4354066985645932,0.0,0.0,3.526315789473684,1,1,1.0
+complacent,normal,"normal | comfort=1, queue=1, urgency=1.25",65.2,9.8159509202454,7.05521472392638,0.0,1.8957055214723928,1,1,1.25
+complacent,normal,"normal | comfort=1, queue=1, urgency=1.5",80.60000000000001,7.94044665012407,5.707196029776675,17.3697270471464,2.069478908188586,1,1,1.5
+complacent,normal,"normal | comfort=1, queue=1, urgency=1.75",98.0,6.530612244897959,4.6938775510204085,26.53061224489796,2.246938775510204,1,1,1.75
+complacent,normal,"normal | comfort=1, queue=1, urgency=2",100.0,18.0,7.399999999999999,22.4,2.05,1,1,2.0
+complacent,normal,"normal | comfort=1, queue=1, urgency=3",100.0,45.8,36.4,34.8,0.794,1,1,3.0

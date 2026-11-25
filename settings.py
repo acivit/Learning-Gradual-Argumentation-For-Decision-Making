@@ -103,31 +103,39 @@ frozen_nodes = [
 ]
 
 # ---------------------------------------------------------------------- #
-# Exhaustive edge-weight sweep (post-training, no retraining)
+# Edge-weight sensitivity analysis (post-training, no retraining)
 # ---------------------------------------------------------------------- #
 # Every variant is a {source: factor} dict applied to the edges source ->
-# EDGE_DISCOUNT_TARGET of the trained bag (same mechanism as
-# EDGE_DISCOUNT_VARIANTS above). Everything starts at EDGE_SWEEP_BASE; the
-# sources listed in EDGE_SWEEP_VALUES are then varied.
+# EDGE_DISCOUNT_TARGET of a trained bag (same mechanism as
+# EDGE_DISCOUNT_VARIANTS above). Everything starts at EDGE_SENSITIVITY_BASE;
+# the sources listed in EDGE_SENSITIVITY_VALUES are then varied.
 #
-# EDGE_SWEEP_MODE:
+# EDGE_SENSITIVITY_MODE:
 #   "one_at_a_time": vary each listed source on its own, the others stay at
-#                    their EDGE_SWEEP_BASE value (n_values per source).
+#                    their EDGE_SENSITIVITY_BASE value (n_values per source).
 #   "grid":          full cartesian product of all listed sources' values.
-EDGE_SWEEP_ENABLED = True
-EDGE_SWEEP_MODE = "one_at_a_time"
-EDGE_SWEEP_BASE = {
+#
+# The analysis runs ONCE per robot profile, after all its .dl models are
+# trained: one simulation is recorded and every (model, edge weight) is
+# evaluated on exactly those simulator inputs (see train.py).
+EDGE_SENSITIVITY_ENABLED = True
+EDGE_SENSITIVITY_MODE = "one_at_a_time"
+EDGE_SENSITIVITY_BASE = {
     "inside_comfort": 1,
     "breaking_queue": 1,
     "robot_urgency": 1,
 }
-EDGE_SWEEP_VALUES = {
+EDGE_SENSITIVITY_VALUES = {
     # 0, 0.25, ..., 2 and then 3
     "robot_urgency": [round(0.25 * i, 2) for i in range(0, 9)] + [3],
-    # To sweep the other edges too, add e.g.:
+    # To vary the other edges too, add e.g.:
     # "inside_comfort": [round(0.25 * i, 2) for i in range(0, 9)] + [3],
     # "breaking_queue": [round(0.25 * i, 2) for i in range(0, 9)] + [3],
 }
-# Also simulate the RL/MAB/MORL models in the sweep run, so the CSV has them
-# as a reference row. Off by default (slower).
-EDGE_SWEEP_INCLUDE_RL_MAB = False
+# Seed (random + numpy) for the single recorded simulation, so the inputs are
+# reproducible. None = do not seed. The global RNG state is restored afterwards.
+EDGE_SENSITIVITY_SEED = 0
+# Also let analyse() draw its own plots (heatmap, radar, ... with one model per
+# .dl file x edge weight, so dozens of models). The dedicated sensitivity plots
+# are always produced.
+EDGE_SENSITIVITY_ANALYSE_PLOTS = False
